@@ -30,4 +30,9 @@ class CallbacksTest < Quickdraw::Test
 	test "callbacks are called in the correct order" do
 		assert_equal Example.call, "<i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i>"
 	end
+
+	test "default before_template and after_template accept a block" do
+		klass = Class.new(Phlex::HTML) { def view_template = span { "hello" } }
+		assert_equal klass.call { "ignored" }, "<span>hello</span>"
+	end
 end
