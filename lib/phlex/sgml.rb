@@ -326,11 +326,11 @@ class Phlex::SGML
 		nil
 	end
 
-	private def before_template
+	private def before_template(&)
 		nil
 	end
 
-	private def after_template
+	private def after_template(&)
 		nil
 	end
 
