@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 	spec.metadata["changelog_uri"] = "https://github.com/phlex-ruby/phlex/releases"
 	spec.metadata["funding_uri"] = "https://github.com/sponsors/joeldrapper"
 	spec.metadata["rubygems_mfa_required"] = "true"
+	spec.metadata["mailing_list_uri"] = "https://www.rubyforum.org/tag/phlex"
 
 	spec.files = Dir[
 		"README.md",

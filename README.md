@@ -1,9 +1,15 @@
 # Phlex
 
+[![Ruby Users Forum](https://img.shields.io/discourse/topics?server=https%3A%2F%2Fwww.rubyforum.org&style=flat&logo=discourse&label=Ruby%20Users%20Forum)](https://www.rubyforum.org/tag/phlex)
+
 Phlex lets you build object-oriented web views in pure Ruby.
 
 - [v2 Docs](https://www.phlex.fun)
 - [v1 Docs](https://v1.phlex.fun)
+
+## Community
+
+Join us in the `phlex` tag on the [Ruby Users Forum](https://www.rubyforum.org/tag/phlex).
 
 ## Versioning and Maintenance
 
