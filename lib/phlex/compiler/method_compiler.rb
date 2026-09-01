@@ -425,7 +425,14 @@ module Phlex::Compiler
 
 		private def output_block?(node)
 			node.body&.body&.any? do |child|
-				Refract::CallNode === child && (
+				# The receiver check is the whole point: `record.title` is a method
+				# call that merely shares its name with `<title>`, and roughly fifty
+				# tag names collide with ordinary method names — `summary`, `map`,
+				# `select`, `time`, `data`, `label`, `code`, `option`, `search`…
+				# Mistaking one for an element makes this block look like it writes
+				# to the buffer, so the body is inlined as a statement and the value
+				# it returned — the actual content — is dropped on the floor.
+				Refract::CallNode === child && nil == child.receiver && (
 					standard_element?(child) ||
 					void_element?(child) ||
 					plain_helper?(child) ||
