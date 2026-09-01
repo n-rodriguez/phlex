@@ -15,8 +15,8 @@ class ModifierIf < Phlex::HTML
 
 	def view_template
 		b { "always" }
-		# Contenu non littéral : le Compactor ne peut pas fondre l'élément en une
-		# seule écriture, donc il s'expanse bien en plusieurs instructions.
+		# Non-literal content: the Compactor cannot fold the element into a
+		# single write, so it really does expand into several statements.
 		span(class: "x") { plain content } if @flag
 		i { "end" }
 	end

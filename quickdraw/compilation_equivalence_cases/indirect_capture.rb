@@ -2,9 +2,9 @@
 
 class IndirectCapture < Phlex::HTML
 	def view_template
-		# `capture` n'apparaît pas ici : c'est `wrapper` qui l'appelle. Le bloc
-		# est pourtant inliné dans cette méthode, donc un garde portant sur le
-		# nom `capture` dans ce corps ne verrait rien.
+		# `capture` does not appear here — `wrapper` is the one calling it. The
+		# block is still inlined into this method, so a guard looking for the
+		# name `capture` in this body would see nothing.
 		captured = wrapper { div { "hi" } }
 		h1 { captured }
 	end

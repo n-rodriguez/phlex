@@ -242,9 +242,10 @@ module Phlex::Compiler
 								]
 							)
 						),
-						# `visit(node)` et non une reconstruction à la main : passer par
-						# le visiteur empile le StatementsNode, ce dont dépend la
-						# détection de position d'instruction dans `visit CallNode`.
+						# `visit(node)` rather than rebuilding the body by hand: going
+						# through the visitor pushes the StatementsNode onto the stack,
+						# which is what the statement-position check in `visit CallNode`
+						# reads.
 						statements: visit(node),
 						subsequent: Refract::ElseNode.new(
 							statements: node

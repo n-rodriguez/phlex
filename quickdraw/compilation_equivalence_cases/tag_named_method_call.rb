@@ -16,7 +16,9 @@ class TagNamedMethodCall < Phlex::HTML
 
 	def record
 		# Anonymous, so re-requiring the file during compilation does not
-		# redefine a constant.
-		Struct.new(:title, :summary).new("Un titre", "Un résumé")
+		# redefine a constant. The accented value is deliberate: it is the only
+		# non-ASCII byte in the equivalence cases, and it exercises the encoding
+		# of the source the compiler reads back and re-emits.
+		Struct.new(:title, :summary).new("A title", "A summary, résumé")
 	end
 end

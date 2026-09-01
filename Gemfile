@@ -20,8 +20,7 @@ group :development do
 	gem "benchmark-ips"
 end
 
-# Notre fork tant que les correctifs du formateur ne sont pas fusionnés en
-# amont : sans eux, `compilation_equivalence_cases/modifier_if.rb` échoue,
-# et la compilation altère la source réémise. À repointer sur
-# `yippee-fun/refract` dès la fusion.
+# Our fork, until the formatter fixes land upstream: without them
+# `compilation_equivalence_cases/modifier_if.rb` fails and compilation alters
+# the re-emitted source. Point this back at `yippee-fun/refract` once merged.
 gem "refract", github: "n-rodriguez/refract", branch: "fix/formatter-fidelity"

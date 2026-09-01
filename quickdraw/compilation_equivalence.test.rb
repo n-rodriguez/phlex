@@ -31,8 +31,9 @@ class CompilationEquivalenceTest < Quickdraw::Test
 			class_name = File.basename(file, ".rb").split("_").map(&:capitalize).join
 			component = Object.const_get(class_name)
 
-			# Les cas qui prennent un argument le déclarent par `EQUIVALENCE_ARGS`.
-			# Défaut : une seule instanciation sans argument.
+			# A case that needs constructor arguments declares them through
+			# `equivalence_args`, one array per instantiation. The default is a
+			# single instance built with none.
 			args = component.respond_to?(:equivalence_args) ? component.equivalence_args : [[]]
 
 			before = args.map { |a| component.new(*a).call }
