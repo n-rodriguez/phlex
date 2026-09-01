@@ -31,10 +31,14 @@ class CompilationEquivalenceTest < Quickdraw::Test
 			class_name = File.basename(file, ".rb").split("_").map(&:capitalize).join
 			component = Object.const_get(class_name)
 
-			before = component.new.call
+			# Les cas qui prennent un argument le déclarent par `EQUIVALENCE_ARGS`.
+			# Défaut : une seule instanciation sans argument.
+			args = component.const_defined?(:EQUIVALENCE_ARGS) ? component::EQUIVALENCE_ARGS : [[]]
+
+			before = args.map { |a| component.new(*a).call }
 			Phlex::Compiler.compile(component)
 			assert_compiled component, path
-			after = component.new.call
+			after = args.map { |a| component.new(*a).call }
 
 			assert_equal after, before
 		end
