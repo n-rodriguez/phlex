@@ -403,7 +403,6 @@ module Phlex::Compiler
 			node => Refract::StringNode | Refract::EmbeddedStatementsNode
 
 			should_render_local
-			buffer_local
 
 			Refract::StatementsNode.new(
 				body: [

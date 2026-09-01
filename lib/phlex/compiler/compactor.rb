@@ -34,7 +34,10 @@ class Phlex::Compiler::Compactor < Refract::MutationVisitor
 										body: [
 											Refract::CallNode.new(
 												receiver: Refract::CallNode.new(
-													name: :__phlex_buffer__,
+													receiver: Refract::LocalVariableReadNode.new(
+														name: :__phlex_state__
+													),
+													name: :buffer,
 												),
 												name: :<<,
 												arguments: Refract::ArgumentsNode.new(

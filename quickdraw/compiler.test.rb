@@ -29,13 +29,16 @@ class CompilerTest < Quickdraw::Test
 
 	# Every compiled method opens with the same preamble and is wrapped in the
 	# backtrace-mapping rescue, so the tests below only vary the buffer writes.
+	#
+	# The buffer is read at each write rather than hoisted into the preamble:
+	# `State#capture` swaps `@buffer` for the duration of a block, so a hoisted
+	# reference would keep writing to the buffer the capture replaced.
 	def compiled_method(body)
 		<<~RUBY
 			def foo
 				begin
 					__phlex_state__ = @_state
 					__phlex_should_render__ = __phlex_state__.should_render?
-					__phlex_buffer__ = __phlex_state__.buffer
 					nil
 					(if __phlex_should_render__
 						#{body}
@@ -49,7 +52,7 @@ class CompilerTest < Quickdraw::Test
 	end
 
 	test "standard element with no arguments and no block" do
-		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_buffer__.<<("<h1></h1>")')
+		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_state__.buffer.<<("<h1></h1>")')
 			def foo
 				h1
 			end
@@ -57,7 +60,7 @@ class CompilerTest < Quickdraw::Test
 	end
 
 	test "standard element with a static content block" do
-		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_buffer__.<<("<h1>Hello</h1>")')
+		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_state__.buffer.<<("<h1>Hello</h1>")')
 			def foo
 				h1 { "Hello" }
 			end
@@ -65,7 +68,7 @@ class CompilerTest < Quickdraw::Test
 	end
 
 	test "void element with literal attributes is serialised at compile time" do
-		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_buffer__.<<("<img src=\"/a.png\">")')
+		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_state__.buffer.<<("<img src=\"/a.png\">")')
 			def foo
 				img(src: "/a.png")
 			end
@@ -74,7 +77,7 @@ class CompilerTest < Quickdraw::Test
 
 	test "adjacent elements are compacted into a single buffer write" do
 		# This is what `Compactor` is for: two `<<` calls must collapse to one.
-		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_buffer__.<<("<h1></h1><h2></h2>")')
+		assert_equivalent_ruby compile(<<~RUBY), compiled_method('__phlex_state__.buffer.<<("<h1></h1><h2></h2>")')
 			def foo
 				h1
 				h2
