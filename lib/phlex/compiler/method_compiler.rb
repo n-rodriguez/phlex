@@ -85,7 +85,16 @@ module Phlex::Compiler
 		end
 
 		visit Refract::CallNode do |node|
-			if nil == node.receiver
+			# Only in statement position. An element expands into several
+			# statements — opening tag, content, closing tag — and Ruby takes only
+			# an expression where a value is expected, so `return li { … }` would
+			# return the opening tag and never run the rest: three unclosed tags
+			# and no content. Same for `x = div { … }` or `plain span { … }`.
+			#
+			# The parent is the node below this one on the visitor's stack, which
+			# holds a StatementsNode exactly when the call stands on its own.
+			# Anything else is left alone and simply renders uncompiled.
+			if nil == node.receiver && Refract::StatementsNode === @stack[-2]
 				if (tag = standard_element?(node))
 					return compile_standard_element(node, tag)
 				elsif (tag = void_element?(node))
@@ -233,9 +242,10 @@ module Phlex::Compiler
 								]
 							)
 						),
-						statements: Refract::StatementsNode.new(
-							body: node.body.map { |n| visit(n) }
-						),
+						# `visit(node)` et non une reconstruction à la main : passer par
+						# le visiteur empile le StatementsNode, ce dont dépend la
+						# détection de position d'instruction dans `visit CallNode`.
+						statements: visit(node),
 						subsequent: Refract::ElseNode.new(
 							statements: node
 						)
