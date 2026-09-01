@@ -5,7 +5,9 @@ class ModifierIf < Phlex::HTML
 	# modifier has to guard all of them: guarding only the last one emits the
 	# opening tag unconditionally and runs the content — side effects included —
 	# when the condition is false.
-	EQUIVALENCE_ARGS = [[true], [false]].freeze
+	def self.equivalence_args
+		[[true], [false]]
+	end
 
 	def initialize(flag)
 		@flag = flag

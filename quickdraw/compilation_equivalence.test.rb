@@ -33,7 +33,7 @@ class CompilationEquivalenceTest < Quickdraw::Test
 
 			# Les cas qui prennent un argument le déclarent par `EQUIVALENCE_ARGS`.
 			# Défaut : une seule instanciation sans argument.
-			args = component.const_defined?(:EQUIVALENCE_ARGS) ? component::EQUIVALENCE_ARGS : [[]]
+			args = component.respond_to?(:equivalence_args) ? component.equivalence_args : [[]]
 
 			before = args.map { |a| component.new(*a).call }
 			Phlex::Compiler.compile(component)

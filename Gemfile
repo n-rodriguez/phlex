@@ -20,4 +20,8 @@ group :development do
 	gem "benchmark-ips"
 end
 
-gem "refract", github: "yippee-fun/refract"
+# Notre fork tant que les correctifs du formateur ne sont pas fusionnés en
+# amont : sans eux, `compilation_equivalence_cases/modifier_if.rb` échoue,
+# et la compilation altère la source réémise. À repointer sur
+# `yippee-fun/refract` dès la fusion.
+gem "refract", github: "n-rodriguez/refract", branch: "fix/formatter-fidelity"
